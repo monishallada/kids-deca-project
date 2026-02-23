@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AURELO — Store Intelligence Platform</title>
+<title>AXON — Store Intelligence Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -1069,6 +1069,44 @@
   .feed-text strong { color: var(--text); }
   .feed-time { font-family: var(--font-mono); font-size: 9px; color: var(--text3); }
 
+  /* ── ACTION LOG ── */
+  .action-log { max-height: 220px; overflow-y: auto; }
+
+  .log-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(100,130,255,0.05);
+    animation: feedIn 0.3s ease;
+  }
+
+  .log-icon { font-size: 14px; line-height: 1; }
+  .log-text { flex: 1; font-size: 11.5px; color: var(--text2); display: flex; gap: 8px; align-items: flex-start; }
+  .log-time { font-family: var(--font-mono); font-size: 9px; color: var(--text3); white-space: nowrap; }
+
+  .log-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    font-size: 9px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    background: rgba(79,124,255,0.08);
+    color: var(--text);
+    flex-shrink: 0;
+  }
+
+  .log-pill.info { color: var(--accent); border-color: rgba(79,124,255,0.4); }
+  .log-pill.success { color: var(--green); border-color: rgba(0,230,118,0.4); }
+  .log-pill.warn { color: var(--accent5); border-color: rgba(255,204,0,0.4); }
+  .log-pill.error { color: var(--red); border-color: rgba(255,64,96,0.4); }
+  .log-pill.deploy { color: var(--accent2); border-color: rgba(0,212,170,0.4); }
+
   /* ── PERF MATRIX ── */
   .perf-matrix {
     display: grid;
@@ -1132,8 +1170,8 @@
   <!-- ════════════ SIDEBAR ════════════ -->
   <aside class="sidebar" id="sidebar">
     <div class="logo" onclick="toggleSidebar()">
-      <div class="logo-mark">A</div>
-      <span class="logo-text">AURELO</span>
+      <div class="logo-mark">X</div>
+      <span class="logo-text">AXON</span>
     </div>
 
     <div class="sidebar-section">
@@ -1197,7 +1235,7 @@
     <div class="sidebar-status">
       <div class="status-dot"><div class="dot"></div>System Operational</div>
       <div class="status-dot"><div class="dot warn"></div>3 Low Stock</div>
-      <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:6px;">v4.2.1 AURELO OS</div>
+      <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:6px;">v4.2.1 AXON OS</div>
     </div>
   </aside>
 
@@ -1209,7 +1247,7 @@
       <div>
         <div class="topbar-title" id="topbarTitle">Store Overview</div>
         <div class="topbar-breadcrumb">
-          <span>Aurelo</span><span class="topbar-sep">›</span>
+          <span>Axon</span><span class="topbar-sep">›</span>
           <span id="topbarCrumb" style="color:var(--text2)">Dashboard</span>
         </div>
       </div>
@@ -1220,7 +1258,7 @@
         <div class="notif-btn" title="Notifications">
           🔔<span class="notif-badge">7</span>
         </div>
-        <div class="avatar" title="Admin">A</div>
+        <div class="avatar" title="Admin">X</div>
       </div>
     </div>
 
@@ -1231,7 +1269,7 @@
       <div class="page-header">
         <div>
           <div class="page-title">Store Intelligence Dashboard</div>
-          <div class="page-subtitle">Real-time performance overview — Aurelo Flagship Store</div>
+          <div class="page-subtitle">Real-time performance overview — Axon Flagship Store</div>
         </div>
         <div class="time-filter">
           <button class="tf-btn active" onclick="setTF(this)">1D</button>
@@ -1269,7 +1307,7 @@
       <div class="ai-panel">
         <div class="ai-header">
           <div class="ai-orb">✦</div>
-          <div class="ai-title">Aurelo AI · Profit Intelligence Engine</div>
+          <div class="ai-title">Axon AI · Profit Intelligence Engine</div>
         </div>
         <div class="ai-insights">
           <div class="ai-insight">
@@ -1385,8 +1423,8 @@
         </div>
       </div>
 
-      <!-- LIVE FEED + PERFORMANCE MATRIX -->
-      <div class="grid-2">
+      <!-- LIVE FEED + PERFORMANCE MATRIX + ACTION LOG -->
+      <div class="grid-3">
         <div class="panel">
           <div class="panel-head">
             <div class="panel-title">🔴 Live Transaction Feed</div>
@@ -1413,6 +1451,15 @@
               <div class="pm-cell"><div class="pm-val c-red">2.3%</div><div class="pm-lbl">Returns</div></div>
               <div class="pm-cell"><div class="pm-val">1.8</div><div class="pm-lbl">Items/Visit</div></div>
             </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">Action Log</div>
+            <div class="panel-tag">Live</div>
+          </div>
+          <div class="panel-body">
+            <div class="action-log" id="actionLog"></div>
           </div>
         </div>
       </div>
@@ -1959,7 +2006,7 @@
       <div class="ai-panel">
         <div class="ai-header">
           <div class="ai-orb">✦</div>
-          <div class="ai-title">Aurelo Predictive Engine · 94.2% Accuracy Last 90 Days</div>
+          <div class="ai-title">Axon Predictive Engine · 94.2% Accuracy Last 90 Days</div>
         </div>
         <div class="ai-insights">
           <div class="ai-insight">
@@ -2197,8 +2244,8 @@ document.getElementById('modal').addEventListener('click', e => {
 // ─── EXPORT ───
 function exportReport() {
   const a = document.createElement('a');
-  a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent('Aurelo Store Report — ' + new Date().toLocaleDateString());
-  a.download = 'aurelo-report.txt';
+  a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent('Axon Store Report — ' + new Date().toLocaleDateString());
+  a.download = 'axon-report.txt';
   a.click();
 }
 
@@ -2250,6 +2297,58 @@ setInterval(() => {
   if (feed.children.length > 10) feed.removeChild(feed.lastChild);
   feedIdx++;
 }, 4000);
+
+// ─── ACTION LOG ───
+const logTemplates = [
+  { level: 'info', icon: 'ℹ️', text: 'Report export requested by Admin' },
+  { level: 'success', icon: '✅', text: 'Inventory sync completed (Warehouse → Store)' },
+  { level: 'warn', icon: '⚠️', text: 'Low stock alert acknowledged for USB-C Hub' },
+  { level: 'error', icon: '⛔', text: 'Payment gateway retrying transaction' },
+  { level: 'deploy', icon: '🚀', text: 'AI model update pushed to edge node' },
+  { level: 'info', icon: '🛰️', text: 'Geo heatmap refreshed with latest traffic' },
+  { level: 'success', icon: '🔄', text: 'Cohort data recomputed (7d window)' },
+];
+
+function timeStampLabel(offsetMinutes = 0) {
+  const d = new Date(Date.now() - offsetMinutes * 60_000);
+  return d.toLocaleTimeString('en-US', { hour12: false });
+}
+
+function pushLog(entry, label = 'Just now') {
+  const log = document.getElementById('actionLog');
+  if (!log) return;
+  const div = document.createElement('div');
+  div.className = 'log-item';
+  div.innerHTML = `
+    <div class="log-icon">${entry.icon}</div>
+    <div class="log-text">
+      <span class="log-pill ${entry.level}">${entry.level}</span>
+      <span>${entry.text}</span>
+    </div>
+    <div class="log-time">${label}</div>
+  `;
+  log.insertBefore(div, log.firstChild);
+  if (log.children.length > 12) log.removeChild(log.lastChild);
+}
+
+function seedActionLog() {
+  logTemplates.slice(0, 6).forEach((tpl, i) => {
+    pushLog(tpl, timeStampLabel((6 - i) * 3));
+  });
+}
+
+setInterval(() => {
+  const base = logTemplates[rand(0, logTemplates.length - 1)];
+  const enriched = { ...base };
+  if (enriched.text.includes('transaction')) {
+    enriched.text = `${enriched.text} #${rand(12000, 48000)}`;
+  } else if (enriched.text.includes('edge node')) {
+    enriched.text = `${enriched.text} ${rand(1, 8)}`;
+  } else if (enriched.text.includes('heatmap')) {
+    enriched.text = `${enriched.text} (${rand(2, 5)} regions updated)`;
+  }
+  pushLog(enriched, 'Just now');
+}, 5200);
 
 // ─── PRODUCT DATA ───
 const products = [
@@ -3060,6 +3159,7 @@ function initForecastCharts() {
 // ─── INIT ALL STATIC DATA ───
 function init() {
   populateLiveFeed();
+  seedActionLog();
   renderProducts();
   renderInventory();
   renderMargins();
